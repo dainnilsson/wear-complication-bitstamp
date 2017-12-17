@@ -1,4 +1,4 @@
-package se.dain.wear.complication.winkdex;
+package se.dain.wear.complication.bitstamp;
 
 import android.support.wearable.complications.ComplicationData;
 import android.support.wearable.complications.ComplicationManager;
@@ -44,15 +44,15 @@ public class BtcProvider extends ComplicationProviderService {
 
     private int getPrice() {
         try {
-            URLConnection urlConnection = new URL("https://winkdex.com/api/v0/price").openConnection();
-            urlConnection.setRequestProperty("User-Agent", "github.com/dainnilsson/wear-complication-winkdex Android Wear");
-            lastPrice = new JSONObject(
+            URLConnection urlConnection = new URL("https://www.bitstamp.net/api/ticker/").openConnection();
+            urlConnection.setRequestProperty("User-Agent", "github.com/dainnilsson/wear-complication-bitstamp Android Wear");
+            lastPrice = (int)(new JSONObject(
                     new BufferedReader(
                             new InputStreamReader(
                                     urlConnection.getInputStream()
                             )
                     ).readLine()
-            ).getInt("price");
+            ).getDouble("last") * 100);
             lastUpdate = System.currentTimeMillis();
         } catch (IOException | JSONException e) {
             Log.e("BTC", "Failed getting price", e);
